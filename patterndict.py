@@ -1,11 +1,14 @@
-import collections
+try:
+    from collections import OrderedDict
+except ImportError:
+    from ordereddict import OrderedDict
 import fnmatch
 
 
 VERSION = (0, 0, 0)
 
 
-class GlobDict(collections.OrderedDict):
+class GlobDict(OrderedDict):
     """
     A dict-like object that matches keys using globs. Order of keys is important.
     """
@@ -14,7 +17,7 @@ class GlobDict(collections.OrderedDict):
         for key in self.keys():
             if fnmatch.fnmatchcase(item, key):
                 return key
-        raise KeyError('{} does not match any glob defined'.format(item))
+        raise KeyError('{0} does not match any glob defined'.format(item))
 
     def __contains__(self, item):
         try:

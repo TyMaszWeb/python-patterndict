@@ -1,4 +1,7 @@
-import unittest
+try:
+    import unittest2 as unittest
+except ImportError:
+    import unittest
 
 import mock
 
@@ -27,14 +30,14 @@ class GlobdictTestCase(unittest.TestCase):
         self.assertRaises(KeyError, lambda: self.d['/terms-and-conditions'])
 
     def test_items(self):
-        self.assertEqual(self.d.items(), [
+        self.assertEqual(list(self.d.items()), [
             ('/pages/home', mock.sentinel.HomeView),
             ('/pages/*', mock.sentinel.PageView),
             ('/blog/*', mock.sentinel.BlogView),
         ])
 
     def test_keys(self):
-        self.assertEqual(self.d.keys(), [
+        self.assertEqual(list(self.d.keys()), [
             '/pages/home', '/pages/*', '/blog/*'
         ])
 
