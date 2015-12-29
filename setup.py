@@ -27,8 +27,8 @@ setuptools.setup(
     license='MIT License',
     classifiers=CLASSIFIERS,
     tests_require=open('test_requirements.txt').read(),
-    packages=['patterndict'],
-    include_package_data=False,
+    # packages=['patterndict'],
+    # include_package_data=False,
     zip_safe=False,
     test_suite='nose.collector',
 )
