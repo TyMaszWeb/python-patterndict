@@ -8,12 +8,12 @@ import mock
 import patterndict
 
 
-class GlobdictTestCase(unittest.TestCase):
+class FnMatchDictTestCase(unittest.TestCase):
 
     d = None
 
     def setUp(self):
-        self.d = patterndict.GlobDict([
+        self.d = patterndict.FnMatchDict([
             ('/pages/home', mock.sentinel.HomeView,),
             ('/pages/*', mock.sentinel.PageView,),
             ('/blog/*', mock.sentinel.BlogView,),
@@ -43,3 +43,26 @@ class GlobdictTestCase(unittest.TestCase):
 
     def test_pop(self):
         self.assertIs(self.d.pop('/pages/about'), mock.sentinel.PageView)
+
+
+class UtilityFunctionsTestCase(unittest.TestCase):
+
+    d = None
+
+    def setUp(self):
+        self.d = patterndict.OrderedDict([
+            ('/pages/home', mock.sentinel.HomeView,),
+            ('/pages/*', mock.sentinel.PageView,),
+            ('/blog/*', mock.sentinel.BlogView,),
+        ])
+
+    def test_fnmatch_getkey(self):
+        self.assertEqual(patterndict.fnmatch_getkey(self.d, '/pages/home'), '/pages/home')
+        self.assertEqual(patterndict.fnmatch_getkey(self.d, '/pages/about'), '/pages/*')
+        self.assertEqual(patterndict.fnmatch_getkey(self.d, '/blog/justin-bieber-married-putin'), '/blog/*')
+
+    def test_fnmatch_getitem(self):
+        self.assertEqual(patterndict.fnmatch_getitem(self.d, '/pages/home'), ('/pages/home', mock.sentinel.HomeView))
+        self.assertEqual(patterndict.fnmatch_getitem(self.d, '/pages/about'), ('/pages/*', mock.sentinel.PageView))
+        self.assertEqual(patterndict.fnmatch_getitem(self.d, '/blog/justin-bieber-married-putin'),
+                        ('/blog/*', mock.sentinel.BlogView))
