@@ -12,4 +12,6 @@ install:
   - pip install -r test_requirements.txt
   - pip install ordereddict unittest2
 
-script: nosetests
+script:
+  - nosetests
+  - python -m doctest patterndict.py
